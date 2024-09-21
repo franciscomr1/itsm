@@ -8,45 +8,44 @@
         },
         size:{
             type:String,
-            default:'lg'
+            default:'md'
         },
-        isFilled:{
-            type:Boolean,
-            default:true
-        }
     });
 
     const iconList = {
-        'arrow-left':'fa-arrow-left',
-        'arrow-right':'fa-arrow-right',
-        'arrow-up':'fa-arrow-up',
-        'arrow-down':'fa-arrow-down',
-        'bars':'fa-bars',
-        'bell':'fa-bell',
-        'book':'fa-book',
-        'building':'fa-building',
-        'chevron-down':'fa-chevron-down',
-        'chevron-right':'fa-chevron-right',
-        'chevron-up':'fa-chevron-up',
-        'circle-user':'fa-circle-user',
-        'database':'fa-database',
-        'desktop': 'fa-desktop',
-        'excel':'fa-file-excel',
-        'floppy-disk':'fa-floppy-disk',
-        'gear':'fa-gear',
-        'handshake-angle':'fa-handshake-angle',
-        'heart':'fa-heart',
-        'house':'fa-house',
-        'inbox':'fa-inbox',
-        'magnifying-glass':'fa-magnifying-glass',
-        'moon':'fa-moon',
-        'paper-plane':'fa-paper-plane',
-        'plus':'fa-plus',
-        'poo':'fa-poo',
-        'share':'fa-share',
-        'star':'fa-star',
-        'trash':'fa-trash-can',
-        'user':'fa-user',
+        'arrow-left':'fa-solidfa-arrow-left',
+        'arrow-right':'fa-solid fa-arrow-right',
+        'arrow-up':'fa-solid fa-arrow-up',
+        'arrow-down':'fa-solid fa-arrow-down',
+        'bars':'fa-solid fa-bars',
+        'bell':'fa-solid fa-bell',
+        'book':'fa-solid fa-book',
+        'building':'fa-solid fa-building',
+        'chevron-down':'fa-solid fa-chevron-down',
+        'chevron-right':'fa-solid fa-chevron-right',
+        'chevron-up':'fa-solid fa-chevron-up',
+        'circle-user':'fa-solid fa-circle-user',
+        'database':'fa-solid fa-database',
+        'desktop': 'fa-solid fa-desktop',
+        'excel':'fa-solid fa-file-excel',
+        'floppy-disk':'fa-solid fa-floppy-disk',
+        'gear':'fa-solid fa-gear',
+        'handshake-angle':'fa-solid fa-handshake-angle',
+        'heart':'fa-solid fa-heart',
+        'house':'fa-solid fa-house',
+        'inbox':'fa-solid fa-inbox',
+        'magnifying-glass':'fa-solid fa-magnifying-glass',
+        'moon':'fa-solid fa-moon',
+        'paper-plane':'fa-solid fa-paper-plane',
+        'plus':'fa-solid fa-plus',
+        'poo':'fa-solid fa-poo',
+        'power-off':'fa-solid fa-power-off',
+        'right-from-bracket':'fa-solid fa-right-from-bracket',
+        'share':'fa-solid fa-share',
+        'star':'fa-solid fa-star',
+        'trash':'fa-solid fa-trash-can',
+        'user':'fa-solid fa-user',
+        'xmark':'fa-solid fa-xmark',
         }
 
     const  sizeList = {
@@ -60,13 +59,8 @@
         '10x':'fa-10x',
     }
 
-    const styleList = {
-        'true':'fa-solid',
-        'false':'fa-regular',
-    }
-
-    const icon = computed(()=>iconList[props.name] ? styleList[props.isFilled] + ' ' + iconList[props.name] : 'fa-solid fa-poo');
-    const iconSize = computed(() => sizeList[props.size] ||  'fa-lg');
+    const icon = computed(()=>iconList[props.name] ?  iconList[props.name] : 'fa-solid fa-poo');
+    const iconSize = computed(() => sizeList[props.size] || '' );
 </script>
 
 <template>

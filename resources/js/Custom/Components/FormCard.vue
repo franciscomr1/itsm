@@ -1,15 +1,12 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
-
-defineProps({
-    title: {
-        type: String,
-        default: null,
-    },
-    description: String,
-    link: String,
-});
+    defineProps({
+        title: {
+            type: String,
+            default: null,
+        },
+    });
 </script>
+
 <template>
     <div class="bg-light-surf.container dark:bg-dark-surf.container p-4 rounded-lg w-full md:max-w-md">
         <div v-if="title">

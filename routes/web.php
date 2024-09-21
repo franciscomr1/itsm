@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Fortify;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Catalog\CompanyController;
+
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -21,7 +24,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Custom/Dashboard');
     })->name('dashboard');
 });
 
@@ -31,4 +34,9 @@ Fortify::loginView(function () {
         //  'canResetPassword' => Route::has('password.request'),
         'fortifyUsername' => Fortify::username(),
     ]);
+});
+
+Route::controller(CompanyController::class)->group(function () {
+    Route::get('/companies', 'index')->name('companies.index');
+    Route::get('/companies/search', 'search')->name('companies.search');
 });

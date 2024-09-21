@@ -23,54 +23,62 @@
             type: String,
             default: null
         },
-        isFilled: {
-            type: Boolean,
-            default: false
-        },
-        size: {
-            type: String,
-            default: 'lg'
-        }
     });
-
     const buttonStyleList = {
-        'filled':'bg-light-primary dark:bg-dark-primary disabled:opacity-75 disabled:pointer-events-none',
-        'outlined':'border-2 border-light-outline dark:border-dark-outline disabled:opacity-75 disabled:pointer-events-none',
-        'standard':'disabled:opacity-75 disabled:pointer-events-none',
-        'tonal':'bg-light-secondary.container dark:bg-dark-secondary.container disabled:opacity-75 disabled:pointer-events-none'
-    };
+        'standard':'text-light-primary dark:text-dark-primary disabled:opacity-75 disabled:pointer-events-none',
+        'primary':'bg-light-accent dark:bg-dark-accent text-white disabled:opacity-75 disabled:pointer-events-none',
+        'secondary':'bg-black/[0.06] dark:bg-white/[0.10] text-light-primary dark:text-dark-primary  disabled:opacity-75 disabled:pointer-events-none',
 
-    const iconStyleList = {
-        'filled':'text-light-on.primary dark:text-dark-on.primary',
-        'outlined':'text-light-on.surface.variant dark:text-dark-on.surface.variant',
-        'standard':'text-light-on.surface.variant dark:text-dark-on.surface.variant',
-        'tonal':'text-light-on.secondary.container dark:text-dark-on.secondary.container'
-    };
+    }
+    const buttonStateList = {
+        'standard':'hover:bg-black/[0.06] dark:hover:bg-white/[0.10] active:bg-black/[0.02] dark:active:bg-white/[0.08] transition ease-in-out duration-150',
+        'primary':'hover:bg-black/[0.06] dark:hover:bg-white/[0.10] active:bg-black/[0.03] dark:active:bg-white/[0.03] transition ease-in-out duration-150',
+        'secondary':'hover:bg-black/[0.05]  hover:dark:bg-white/[0.05] active:bg-black/[0.02] dark:active:bg-white/[0.03] transition ease-in-out duration-150',
+    }
 
-    const stateLayerStyleList = {
-        'filled':'hover:bg-light-on.primary/[0.08] dark:hover:bg-dark-on.primary/[0.08] focus:bg-light-on.primary/[0.12] dark:focus:bg-dark-on.primary/[0.12] active:bg-light-on.primary/[0.12] dark:active:bg-dark-on.primary/[0.12] transition ease-in-out duration-150',
-        'outlined':'hover:bg-light-on.surface.variant/[0.08] dark:hover:bg-dark-on.surface.variant/[0.08] focus:bg-light-on.surface.variant/[0.12] dark:focus:bg-dark-on.surface.variant/[0.12] active:bg-light-on.surface.variant/[0.12] dark:active:bg-dark-on.surface.variant/[0.12] transition ease-in-out  duration-150',
-        'standard':'hover:bg-light-on.surface.variant/[0.08] dark:hover:bg-dark-on.surface.variant/[0.08] focus:bg-light-on.surface.variant/[0.12] dark:focus:bg-dark-on.surface.variant/[0.12] active:bg-light-on.surface.variant/[0.12] dark:active:bg-dark-on.surface.variant/[0.12] transition ease-in-out duration-150',
-        'tonal':'hover:bg-light-on.secondary.container/[0.08] dark:hover:bg-dark-on.secondary.container/[0.08] focus:bg-light-on.secondary.container/[0.12] dark:focus:bg-dark-on.secondary.container/[0.12] active:bg-light-on.secondary.container/[0.12] dark:active:bg-dark-on.secondary.container/[0.12] transition ease-in-out duration-150'
-    };
-
-    const buttonClass = computed(() => buttonStyleList[props.style] || '');
-    const iconClass = computed(() => iconStyleList[props.style] || '');
-    const stateLayerClass = computed(() => stateLayerStyleList[props.style] || '');
-    const isDisabled = computed(() => props.isDisabled || false);
+    const buttonClass = computed(() => buttonStyleList[props.style] || 'text-light-primary dark:text-dark-primary disabled:opacity-75 disabled:pointer-events-none');
+    const buttonStateClass = computed(() => buttonStateList[props.style] || 'hover:bg-black/[0.06] dark:hover:bg-white/[0.10] active:bg-black/[0.02] dark:active:bg-white/[0.08] transition ease-in-out duration-150');
 </script>
 
 <template>
-    <button :type="type"  class="rounded-full " :class="[buttonClass, label ? '' : 'h-10 w-10']" :disabled="isDisabled">
-        <div id="state-layer" class="w-full h-full rounded-full" :class="stateLayerClass">
-            <div v-if="!iconName && !label" class="flex items-center justify-center w-full h-full text-stone-600 dark:text-stone-300">
-                <Icon  />
+    <button :type="type"  :class="[buttonClass, label ? 'rounded-md h-min w-min' : 'rounded-md h-9 w-9']" :disabled="isDisabled">
+        <div  id="state-layer" class="w-full h-full rounded-md " :class="buttonStateClass" >
+            <div v-if="label" class="flex items-center justify-center rounded-md md:h-full md:w-full" :class="iconName ? 'h-9 w-9' : ''">
+                <Icon v-if="iconName"  :name="iconName" class="block md:hidden "  />
+                <span  class="text-sm font-medium" :class="iconName ? 'hidden md:block py-0 md:py-2 md:px-4' : 'py-2 px-4'">{{ label }}</span>  
             </div>
-            <div v-else class="flex items-center justify-center space-x-2 w-full h-full" :class="[iconClass,label ? 'px-4 py-2' : '']">    
-                <Icon v-if="iconName" :name="iconName" :isFilled="isFilled"  />
+
+            <div v-else class="flex items-center justify-center rounded-md w-9 h-9">    
+                <Icon v-if="iconName"  :name="iconName"  />
+                <Icon v-else name="poo"  />
+            </div>
+        </div>
+    </button>
+</template>
+
+<!--
+
+    <button :type="type"  class="rounded-md h-10 w-10 " :disabled="isDisabled">
+        <div id="state-layer" class="w-full h-full rounded-md hover:bg-black/[0.05] dark:hover:bg-white/[0.05]" >
+            <div  class="flex items-center justify-center space-x-2 rounded-md w-full h-full">    
+                <Icon v-if="iconName" class="dark:text-white" :name="iconName"  />
                 <span v-if="label" class="text-sm font-medium">{{ label }}</span>
             </div>
         </div>
     </button>
 
-</template>
+
+
+
+        <button :type="type"  :class="[buttonClass, label ? 'rounded-md h-10 w-10 md:h-min md:w-min' : 'rounded-md h-10 w-10']" :disabled="isDisabled">
+        <div  id="state-layer" class="w-full h-full rounded-md " :class="buttonStateClass" >
+            <div v-if="label || iconName" class="flex items-center justify-center rounded-md w-full h-full">    
+                <Icon v-if="iconName"  :name="iconName" :class="label ? 'block md:hidden' : ''"  />
+                <span v-if="label" class=" py-2 px-4 text-sm font-medium hidden md:block">{{ label }}</span>
+            </div>
+            <div v-else class="flex items-center justify-center rounded-md w-full h-full">    
+                <Icon   name="poo"  />
+            </div>
+        </div>
+    </button>
+-->
