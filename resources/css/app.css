@@ -6,3 +6,8 @@
 [x-cloak] {
     display: none;
 }
+
+@font-face {
+    font-family: 'Cantarell';
+    src: local('Cantarell'), url(./fonts/Cantarell-VF.otf) format('otf');
+  }

@@ -34,59 +34,63 @@
 
 <template>
     <Head title="Login" />
-    <div class="min-h-screen flex flex-col justify-center items-center bg-light-surface  dark:bg-dark-surface px-4 md:px-0">
-        <FormCard >
-            <Logo size="md" class="mx-auto" />
-            <template #form-content>
-                <form @submit.prevent="submit">
-                    <div class="space-y-2 mb-2">
-                        <div v-if="fortifyUsername === 'email'">
-                            <InputLabel value="Email" for="email"  />
-                            <TextInput
-                                id="email"
-                                v-model="form.email"
-                                type="email"
-                                class="mt-1 block w-full"
-                                required
-                                autofocus
-                                autocomplete="username"
-                            />
-                            <InputError :message="form.errors.email" />
+    <div class="min-h-screen flex flex-col justify-center items-center bg-light-container  dark:bg-dark-container">
+        <div class="  w-full md:max-w-md">
+            <FormCard>
+                <template #header>
+                    <Logo size="xl" class="mx-auto" />
+                </template>
+                <template #content>
+                    <form @submit.prevent="submit">
+                        <div class="space-y-2 mb-2">
+                            <div v-if="fortifyUsername === 'email'">
+                                <InputLabel label="Email" for="email"  />
+                                <TextInput
+                                    id="email"
+                                    v-model="form.email"
+                                    type="email"
+                                    class="mt-1 block w-full"
+                                    required
+                                    autofocus
+                                    autocomplete="username"
+                                />
+                                <InputError :message="form.errors.email" />
+                            </div>
+    
+                            <div v-else>
+                                <InputLabel label="Username" for="username"  />
+                                <TextInput
+                                    id="username"
+                                    v-model="form.username"
+                                    type="text"
+                                    class="mt-1 block w-full"
+                                    required
+                                    autofocus
+                                    autocomplete="username"
+                                />
+                                <InputError :message="form.errors.username" />
+                            </div>
+    
+                            <div>
+                                <InputLabel for="password" label="Password" />
+                                <TextInput
+                                    id="password"
+                                    v-model="form.password"
+                                    type="password"
+                                    class="mt-1 block w-full"
+                                    required
+                                    autocomplete="current-password"
+                                />
+                                <InputError class="mt-2" :message="form.errors.password" />
+                            </div>
+    
+                            <div class="flex justify-end">
+                                <ActionButton type="submit" label="Iniciar Sesión" :style="'primary'" />
+                            </div>
                         </div>
-
-                        <div v-else>
-                            <InputLabel value="Username" for="username"  />
-                            <TextInput
-                                id="username"
-                                v-model="form.username"
-                                type="text"
-                                class="mt-1 block w-full"
-                                required
-                                autofocus
-                                autocomplete="username"
-                            />
-                            <InputError :message="form.errors.username" />
-                        </div>
-
-                        <div>
-                            <InputLabel for="password" value="Password" />
-                            <TextInput
-                                id="password"
-                                v-model="form.password"
-                                type="password"
-                                class="mt-1 block w-full"
-                                required
-                                autocomplete="current-password"
-                            />
-                            <InputError class="mt-2" :message="form.errors.password" />
-                        </div>
-
-                        <div class="flex justify-end">
-                            <ActionButton type="submit" label="Iniciar Sesión" :style="'filled'" />
-                        </div>
-                    </div>
-                </form>
-            </template>
-        </FormCard>
+                    </form>
+                </template>
+            </FormCard>
+        </div>
     </div>
 </template>

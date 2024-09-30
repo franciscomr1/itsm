@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Catalog;
+namespace App\Http\Requests\Webapp;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CompanyRequest extends FormRequest
+class BranchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

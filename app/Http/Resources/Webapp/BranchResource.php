@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Catalog;
+namespace App\Http\Resources\Webapp;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PositionResource extends JsonResource
+class BranchResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

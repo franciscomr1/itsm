@@ -4,6 +4,9 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import  Topbar  from '@/Custom/Components/Topbar.vue';
 import  ActionButton  from '@/Custom/Components/ActionButton.vue';
 import  Sidebar  from '@/Custom/Components/Sidebar.vue';
+import  SidebarSection  from '@/Custom/Components/SidebarSection.vue';
+import  SideBarMenu  from '@/Custom/Components/SideBarMenu.vue';
+import  SidebarMenuLink  from '@/Custom/Components/SidebarMenuLink.vue';    
 import  ContentContainer  from '@/Custom/Components/ContentContainer.vue';
 import  Dropdown  from '@/Custom/Components/Dropdown.vue';
 import  Logo  from '@/Custom/Components/Logo.vue';
@@ -37,8 +40,8 @@ const logout = () => {
                         <div class="inline-flex items-center p-1 w-full ">
                         <div class="w-12">
                         </div>
-                        <div class="w-full px-2 py-1.5 flex items-center justify-center">
-                            <h2 class="font-semibold text-light-primary dark:text-dark-primary tracking-wide">Service Manager</h2>
+                        <div class="w-full px-2 py-1.5  flex items-center justify-center">
+                            <h2 class="font-semibold text-light-primary dark:text-dark-primary">Service Manager</h2>
                         </div>
                         <div class="w-12">
                             <ActionButton iconName="xmark" class="block md:hidden" @click="toggleSidebar()" />
@@ -46,17 +49,31 @@ const logout = () => {
                     </div>
                     </template>
                     <template #content>
-                        <h1>{{title}}</h1>
+                        <SidebarSection title="Catálogos">
+                            <template #content>
+                                <SideBarMenu label="Empresa" iconName="building">
+                                    <template #dropdown-menu>
+                                        <SidebarMenuLink label="Empresas" route-name="companies.index" />
+                                    </template>
+                                </SideBarMenu>
+                                <SideBarMenu label="Activos" iconName="desktop">
+                                    <template #dropdown-menu>
+                                        <SidebarMenuLink label="Empresas"  :href="route('companies.index')" />
+                                    </template>
+                                </SideBarMenu>
+                                <SidebarLink label="Perfil" iconName="user" :href="route('dashboard')" />
+                            </template>
+                        </SidebarSection>
                     </template>
                 </Sidebar>
 
             </div>
 
             <!-- Main Content -->
-            <div class="flex-1 flex flex-col overflow-hidden bg-light-background dark:bg-dark-background">
+            <div class="flex-1 flex flex-col bg-light-background dark:bg-dark-background overflow-hidden">
                 <Topbar>
                     <template #left>
-                        <ActionButton iconName="bars" class="block md:hidden" @click="toggleSidebar()" />
+                        <ActionButton iconName="bars"  :style="'secondary'" class="block md:hidden" @click="toggleSidebar()" />
                     </template>
                     <template #center>
                         <Logo size="lg" class="mx-auto"/>
@@ -66,14 +83,15 @@ const logout = () => {
                     </template>
                 </Topbar>
 
-                <div class="flex p-4 h-full">
+                <div class="flex p-4 h-full overflow-hidden">
                     
 
 
-                    <div class="flex-1 h-full overflow-hidden bg-light-container dark:bg-dark-container rounded-md border dark:border-neutral-800 shadow-sm">
- 
+                    <div class="flex-1 h-full  bg-light-container dark:bg-dark-container rounded-lg border dark:border-neutral-800 shadow-sm overflow-auto">
 
                         <slot name="content"/>
+            
+  
                     </div>
                 </div>
 

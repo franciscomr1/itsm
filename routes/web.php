@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Fortify;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Catalog\CompanyController;
+use App\Http\Controllers\Webapp\CompanyController;
+
 
 
 
@@ -39,4 +40,5 @@ Fortify::loginView(function () {
 Route::controller(CompanyController::class)->group(function () {
     Route::get('/companies', 'index')->name('companies.index');
     Route::get('/companies/search', 'search')->name('companies.search');
+    Route::post('/companies/store', 'store')->name('companies.store');
 });

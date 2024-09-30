@@ -16,9 +16,9 @@ class DataTableResourceFormat
         return __('models.' . $this->resourceName);
     }
 
-    public function getRoute(): string
+    public function getResourceName(): string
     {
-        return "{$this->resourceName}.search";
+        return $this->resourceName;
     }
 
     public function getColumns(): array

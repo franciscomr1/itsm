@@ -77,6 +77,7 @@ const logout = () => {
                                             <DropdownLink label="Outbox" routeName="dashboard" badge-value="1" :has-badge="true" />
                                         </template>
                                     </Dropdown>
+                                    <div class="mx-4 py-1 border-b border-neutral-300 dark:border-neutral-700"></div>
                                 </template>
                             </SidebarSection>
                         </template>

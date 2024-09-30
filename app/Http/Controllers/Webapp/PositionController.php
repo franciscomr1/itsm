@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Catalog;
+namespace App\Http\Controllers\Webapp;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class BranchController extends Controller
+class PositionController extends Controller
 {
     //
 }

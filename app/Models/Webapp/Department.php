@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Catalog;
+namespace App\Models\Webapp;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Branch extends Model
+class Department extends Model
 {
     use HasFactory;
 }

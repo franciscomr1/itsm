@@ -283,6 +283,13 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' =>'nombre',
+        'business_name' => 'razón_social',
+        'address' => 'dirección',
+        'city' => 'ciudad',
+        'state' => 'estado',
+        'postal_code' => 'codigo_postal',
+    ],
 
 ];

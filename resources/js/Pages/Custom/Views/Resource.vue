@@ -8,7 +8,7 @@ const props = defineProps({
         type: String,
         required:true
     },
-    route: {
+    resource: {
         type: String,
         required:true
     },
@@ -21,10 +21,8 @@ const props = defineProps({
 
 <template>
     <AppLayout :title="title">
-        <ContentContainer :columns="1">
-            <template #content-column-1>
-                <ResourceTable :title="title" :route="route" :columns="columns" />
-            </template>
-        </ContentContainer>
+        <template #content>
+            <ResourceTable :title="title" :resource="resource" :columns="columns" />
+        </template>
     </AppLayout>
 </template>

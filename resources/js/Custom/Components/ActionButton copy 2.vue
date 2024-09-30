@@ -27,13 +27,13 @@
     const buttonStyleList = {
         'standard':'text-light-primary dark:text-dark-primary disabled:opacity-75 disabled:pointer-events-none',
         'primary':'bg-light-accent dark:bg-dark-accent text-white disabled:opacity-75 disabled:pointer-events-none',
-        'secondary':'bg-black/[8%] dark:bg-white/[8%] text-light-primary dark:text-dark-primary  disabled:opacity-75 disabled:pointer-events-none',
+        'secondary':'bg-black/[0.06] dark:bg-white/[0.10] text-light-primary dark:text-dark-primary  disabled:opacity-75 disabled:pointer-events-none',
 
     }
     const buttonStateList = {
-        'standard':'hover:bg-black/[8%] dark:hover:bg-white/[8%] active:bg-black/[12%] dark:active:bg-white/[12%] focus:bg-black/[12%] dark:focus:bg-white/[12%] transition ease-in-out duration-150',
-        'primary':'hover:bg-white/[8%] dark:hover:bg-white/[8%]  active:bg-light-accent-variant dark:active:bg-dark-accent-variant focus:bg-light-accent-variant dark:focus:bg-dark-accent-variant transition ease-in-out duration-150',
-        'secondary':'hover:bg-black/[4%]  hover:dark:bg-white/[4%] active:bg-black/[8%] dark:active:bg-white/[8%] focus:bg-black/[8%] dark:focus:bg-white/[8%] transition ease-in-out duration-150',
+        'standard':'hover:bg-black/[0.06] dark:hover:bg-white/[0.10] active:bg-black/[0.02] dark:active:bg-white/[0.08] transition ease-in-out duration-150',
+        'primary':'hover:bg-black/[0.06] dark:hover:bg-white/[0.10] active:bg-black/[0.03] dark:active:bg-white/[0.03] transition ease-in-out duration-150',
+        'secondary':'hover:bg-black/[0.05]  hover:dark:bg-white/[0.05] active:bg-black/[0.02] dark:active:bg-white/[0.03] transition ease-in-out duration-150',
     }
 
     const buttonClass = computed(() => buttonStyleList[props.style] || 'text-light-primary dark:text-dark-primary disabled:opacity-75 disabled:pointer-events-none');
@@ -41,11 +41,11 @@
 </script>
 
 <template>
-    <button :type="type"  :class="[buttonClass, label ? 'rounded-md h-min min-w-max' : 'rounded-md h-9 w-9']" :disabled="isDisabled">
+    <button :type="type"  :class="[buttonClass, label ? 'rounded-md h-min w-min' : 'rounded-md h-9 w-9']" :disabled="isDisabled">
         <div  id="state-layer" class="w-full h-full rounded-md " :class="buttonStateClass" >
             <div v-if="label" class="flex items-center justify-center rounded-md md:h-full md:w-full" :class="iconName ? 'h-9 w-9' : ''">
                 <Icon v-if="iconName"  :name="iconName" class="block md:hidden "  />
-                <span  class="text-sm font-semibold" :class="iconName ? 'hidden md:block py-0 md:py-2 md:px-4' : 'py-2 px-4'">{{ label }}</span>  
+                <span  class="text-sm font-medium" :class="iconName ? 'hidden md:block py-0 md:py-2 md:px-4' : 'py-2 px-4'">{{ label }}</span>  
             </div>
 
             <div v-else class="flex items-center justify-center rounded-md w-9 h-9">    

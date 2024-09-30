@@ -15,7 +15,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Cantarell', 'Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 light:{
@@ -23,19 +23,21 @@ export default {
                     'container':'#ffffff',
                     'container-variant':'#ebebeb',
                     'accent':'#3584e4',
-                    'primary':'#191919',
-                    'secondary':'#404040',
-                    'tertiary':'#666666',
+                    'accent-variant':'#1c71d8',
+                    'primary':'#0a0a0a',
+                    'secondary':'#333333',
+                    'tertiary':'#5c5c5c',
 
                 },
                 dark:{
-                    'background':'#292929',
+                    'background':'#1e1e1e',
                     'container':'#333333',
-                    'container-variant':'#212121',
+                    'container-variant':'#292929',
                     'accent':'#3584e4',
-                    'primary':'#e6e6e6',
-                    'secondary':'#bfbfbf',
-                    'tertiary':'#999999',
+                    'accent-variant':'#1c71d8',
+                    'primary':'#f5f5f5',
+                    'secondary':'#cccccc',
+                    'tertiary':'#a3a3a3',
 
                 },
             },

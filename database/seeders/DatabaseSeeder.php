@@ -5,11 +5,11 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\Catalog\CompanySeeder;
-use Database\Seeders\Catalog\BranchSeeder;
-use Database\Seeders\Catalog\DepartmentSeeder;
-use Database\Seeders\Catalog\PositionSeeder;
-use Database\Seeders\Catalog\EmployeeSeeder;
+use Database\Seeders\Webapp\CompanySeeder;
+use Database\Seeders\Webapp\BranchSeeder;
+use Database\Seeders\Webapp\DepartmentSeeder;
+use Database\Seeders\Webapp\PositionSeeder;
+use Database\Seeders\Webapp\EmployeeSeeder;
 use Database\Seeders\UserSeeder;
 
 class DatabaseSeeder extends Seeder

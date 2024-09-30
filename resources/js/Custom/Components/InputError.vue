@@ -8,6 +8,6 @@ defineProps({
 
 <template>
     <div class="h-4">
-        <p v-if="message" class="text-light-error dark:text-dark-error text-sm">{{ message }}</p>
+        <p v-if="message" class="text-left text-red-600 dark:text-red-300 text-sm">{{ message }}</p>
     </div>
 </template>

@@ -7,7 +7,7 @@ defineProps({
 });
 </script>
 <template>
-    <label class="block text-sm font-medium text-light-on.surface dark:text-dark-on.surface">
+    <label class="block text-sm text-left font-medium text-light-primary dark:text-dark-primary pt-1">
         {{ value }}
     </label>
 </template>
