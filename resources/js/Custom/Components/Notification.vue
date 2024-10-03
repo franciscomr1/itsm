@@ -44,17 +44,14 @@
     const icon = computed(()=>iconList[props.type] ?  iconList[props.type] : props.iconName);
 
 
-   const emit =  defineEmits(['hideNotification','ReloadTable'])
+   const emit =  defineEmits(['hideNotification'])
 
 
 const clearNotification = () => {
     emit('hideNotification')
-    emit('ReloadTable')
 }
 
-const reload = () => {
-    emit('ReloadTable')
-}
+
 
     const fade = (timevar, ) => {
         setTimeout(function () {
@@ -81,7 +78,6 @@ const reload = () => {
      
                          <Icon :name="icon" size="lg" />
                      </div>
-     
                  </div>
                  <div  class="pl-2  w-10/12 ">
                      <h2 class="text-sm font-medium text-light-primary dark:text-dark-primary">{{ title }}</h2>
@@ -89,7 +85,6 @@ const reload = () => {
                  </div>
                  <div class="flex flex-col items-center justify-center w-1/12">
                      <button @click="clearNotification()"  class="h-7 w-7 rounded-full text-light-primary dark:text-dark-primary hover:bg-black/[8%] dark:hover:bg-white/[8%] active:bg-black/[12%] dark:active:bg-white/[12%] focus:bg-black/[12%] dark:focus:bg-white/[12%] transition ease-in-out duration-150"><Icon :name="'xmark'" size="'sm'" /></button>
-     
                  </div>
      
              </div>

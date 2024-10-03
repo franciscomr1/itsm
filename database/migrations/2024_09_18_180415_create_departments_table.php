@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('name',64)->unique();
+            $table->string('cost_center', 8);
             $table->string('created_by',32);
             $table->string('updated_by',32);
             $table->timestamps();

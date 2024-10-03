@@ -36,7 +36,7 @@
     <Head title="Login" />
     <div class="min-h-screen flex flex-col justify-center items-center bg-light-container  dark:bg-dark-container">
         <div class="  w-full md:max-w-md">
-            <FormCard>
+            <FormCard class="border dark:border-neutral-800 shadow-sm">
                 <template #header>
                     <Logo size="xl" class="mx-auto" />
                 </template>

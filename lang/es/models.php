@@ -16,5 +16,5 @@ return [
     'branches' => 'Sucursales',
     'company_id' => 'Empresa',
     'departments' => 'Departmentos',
-
+    'cost_center' => 'Centro de Costos',
 ];

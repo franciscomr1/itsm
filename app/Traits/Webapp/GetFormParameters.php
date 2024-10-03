@@ -11,22 +11,22 @@ trait GetFormParameters
     {
         $modelAttributes =  Schema::getColumns(self::getTable());
         $modelFillable = self::getFillable();
-        $columnPropierties = [];
-        $formColumns = [];
+        $formFields = [];
+        $formFieldValues = [];
 
         if (empty($attributes)) {
             foreach ($modelFillable as $key => $value) {
-                $formColumns[$value] = null;
+                $formFieldValues[$value] = null;
             }
         } else {
-            $formColumns = $attributes;
+            $formFieldValues = $attributes;
         }
 
         if (method_exists($this, 'getRelationshipColumns')) {
             $modelRelationships = self::getRelationshipColumns();
             foreach ($modelRelationships as $key => $value) {
                 $modelFillable = array_diff($modelFillable, array($key));
-                $columnPropierties[$key] = [
+                $formFields[$key] = [
                     'id' => $key,
                     'label' =>  $key,
                     'type' => 'select',
@@ -40,7 +40,7 @@ trait GetFormParameters
         foreach ($modelAttributes as $key => $value) {
             if (in_array($value['name'], $modelFillable) && !$value['default']) {
                 if ($value['type_name'] === 'varchar') {
-                    $columnPropierties[$key] = [
+                    $formFields[$key] = [
                         'id' => $value['name'],
                         'label' =>   __('models.' . $value['name']),
             //   __('models.' . $value['name]);
@@ -52,7 +52,7 @@ trait GetFormParameters
                         ]
                     ];
                 } elseif ($value['type_name'] === 'boolean') {
-                    $columnPropierties[$key] = [
+                    $formFields[$key] = [
                         'id' => $value['name'],
                         'label' =>  $value['name'],
                         'type' => 'checkbox',
@@ -62,10 +62,10 @@ trait GetFormParameters
         }
 
         return [
-            'title' => self::getTable(),
+            'title' => __('models.' . self::getTable()),
             'resource' => self::getTable(),
-            'formFields' => $formColumns,
-            'fieldPropierties' => $columnPropierties
+            'fieldValues' => $formFieldValues,
+            'fields' => $formFields
 
         ];
     }

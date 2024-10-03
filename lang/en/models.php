@@ -16,4 +16,5 @@ return [
     'branches' => 'Branches',
     'company_id' => 'Company',
     'departments' => 'Departments',
+    'cost_center' => 'Cost Center',
 ];

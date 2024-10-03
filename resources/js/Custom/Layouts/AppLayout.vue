@@ -54,6 +54,7 @@ const logout = () => {
                                 <SideBarMenu label="Empresa" iconName="building">
                                     <template #dropdown-menu>
                                         <SidebarMenuLink label="Empresas" route-name="companies.index" />
+                                        <SidebarMenuLink label="Departamentos" route-name="departments.index" />
                                     </template>
                                 </SideBarMenu>
                                 <SideBarMenu label="Activos" iconName="desktop">

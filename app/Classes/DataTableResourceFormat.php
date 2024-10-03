@@ -2,16 +2,18 @@
 
 namespace App\Classes;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Route;
 
 class DataTableResourceFormat
 {
     private ?string $resourceName = null;
+
     public function __construct(string $resourceName)
     {
         $this->resourceName = $resourceName;
     }
 
-    public function getTitle(): string
+    public function getResourceAlias(): string
     {
         return __('models.' . $this->resourceName);
     }
@@ -21,13 +23,23 @@ class DataTableResourceFormat
         return $this->resourceName;
     }
 
-    public function getColumns(): array
+    public function getAttributes(): array
     {
-        $columnsModel =  Schema::getColumnListing($this->resourceName);
-        $columns = [];
-        foreach ($columnsModel as $key => $value) {
-            $columns[$key] = ['data' => $value, 'title' =>  __('models.' . $value)];
+        $attributesModel =  Schema::getColumnListing($this->resourceName);
+        $attributes = [];
+        foreach ($attributesModel as $key => $value) {
+            $attributes[$key] = ['data' => $value, 'title' =>  __('models.' . $value)];
         }
-        return $columns;
+
+        if(Route::has($this->resourceName . '.update')){
+
+            array_push($attributes,[
+                 "data"=> null,
+                  "defaultContent"=> "",
+                   'name' => 'update'
+            ]);
+        }
+ 
+        return $attributes;
     }
 }

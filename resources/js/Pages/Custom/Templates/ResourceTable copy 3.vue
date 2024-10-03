@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted, computed } from 'vue';
+    import { ref, onMounted } from 'vue';
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net';
     import jszip from 'jszip';
@@ -8,7 +8,6 @@
     import 'datatables.net-buttons/js/buttons.print.mjs';
     import ResourceForm from '@/Pages/Custom/Templates/ResourceForm.vue';
     import Notification from '@/Custom/Components/Notification.vue';
-    import ActionButton from '@/Custom/Components/ActionButton.vue';
 
     window.JSZip = jszip;
     DataTable.use(DataTablesCore);
@@ -50,7 +49,7 @@
                                     text: '<i class="fa-solid fa-plus"></i>',
                                     className:'dt-btn-create',
                                     action: function (e, dt, node, config) {
-                                        openCreateFormModal(null)
+                                        openModal()
                                     }   
                                 },
                                 { 
@@ -88,21 +87,10 @@
             }
         
     const formData = ref(null);
-    const formFieldValues=ref({});
-
     const modalIsVisible = ref(false);
     const notificationIsVisible = ref(true);
 
-    const isNewRecord = ref(true);
-
-    const getFormData = async(data = null) => {
-        if (formData.value === null) {
-            formData.value = await getResourceFormData();
-            formFieldValues.value = formData.value['fieldValues']
-        }
-    }
-
-    const getResourceFormData = async () => {
+    const getResourceData = async () => {
         try {
             const response = await axios.get(route('create.resource'),
             {
@@ -118,17 +106,10 @@
         }
     }
 
-    const openUpdateFormModal = async(rowData) => {
-        isNewRecord.value = false
-        await getFormData()
-        formData.value['fieldValues'] = rowData
-        modalIsVisible.value = true;
-    }
-
-    const openCreateFormModal =  async() => {
-        isNewRecord.value = true
-        await getFormData()
-        formData.value['fieldValues'] = formFieldValues.value
+    const openModal = async () => {
+        if (formData.value === null) {
+            formData.value = await getResourceData();
+        }
         modalIsVisible.value = true;
     }
 
@@ -137,63 +118,73 @@
     }
 
     const hideNotification = () => {
+        console.log('close')
         notificationIsVisible.value = false;
-        location.reload();
     }
 
     const ajax = route(props.resource+'.search');
 
+
+
     let dt;
-    const table = ref();
+const table = ref();
  
-    onMounted(function () {
-    dt = table.value.dt;
-    });
-    
-    function reloadTable() {
-        dt.ajax.url(route(props.resource+'.search')).load();
-    }
+onMounted(function () {
+  dt = table.value.dt;
+});
+ 
+function reloadTable() {
+    dt.ajax.url(route(props.resource+'.search')).load();
+}
+
+const test = (val) => {
+    console.log(val);
+}
+
 
 </script>
 
 <template>
     <div v-if="modalIsVisible" class="relative z-10">
-
         <div class="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity"></div>
+
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div class="relative transform overflow-hidden transition-all w-full md:max-w-md px-6 md:px-0">
-                    <ResourceForm @close-modal="closeModal"  :title="title" :resource="resource" :fields="formData['fields']" :field-values="formData['fieldValues']" :isNewRecord="isNewRecord" />
+                    <ResourceForm @close-modal="closeModal"  :title="title" :resource="resource" :formFields="formData['formFields']" :fieldPropierties="formData['fieldPropierties']" />
                 </div>
             </div>
         </div>
     </div>
 
-    {{ $page.props.flash.message }}
     <div class="relative">
         <div class="w-full">
-            <Notification v-if="$page.props.flash.message && notificationIsVisible" 
+            <Notification v-if="$page.props.flash.message" 
+             v-show="notificationIsVisible" 
              @hide-notification="hideNotification" 
-             :type="$page.props.flash.message.type"
+             @reload-table="reloadTable"
              :title="$page.props.flash.message.title"
              :description="$page.props.flash.message.description" />
         </div>
-    </div>
+
+</div>
 
 
     <div class="p-4">
         <div class="">
             <DataTable
-                ref="table"
+            ref="table"
                 id="table-resource"
                 :ajax="ajax"
                 :columns="columns"
                 :options="options"
-                class="display " 
-            >
-            <template #column-update="props">
-                <ActionButton icon-name="pencil" @click="openUpdateFormModal(props.rowData)" />
+                class="display "
 
+
+                
+            >
+            <template #action="props">
+                <button type="button" class="btn btn-primary" @click="test(props.rowData['id'])">Edit</button>
         </template>
 
         </DataTable>

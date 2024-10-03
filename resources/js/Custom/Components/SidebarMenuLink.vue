@@ -24,7 +24,7 @@ defineProps({
 <template>
     <div class="w-full">
         <Link :href="route(routeName)" class="grid grid-cols-6 gap-2 py-1.5 rounded-lg w-full text-light-secondary dark:text-dark-secondary hover:bg-black/[0.05]  hover:dark:bg-white/[0.05] ">
-            <div class=" col-start-2 col-span-4 "><span class=" text-left">{{ label }}</span></div>
+            <div class=" col-start-2 col-span-4 "><span class="text-sm text-left">{{ label }}</span></div>
             <div v-if="hasBadge"  class="col-span-1  mx-auto"><span class="">{{ badgeValue }}</span></div>
         </Link>
     </div>

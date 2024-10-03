@@ -42,6 +42,7 @@
         'magnifying-glass':'fa-solid fa-magnifying-glass',
         'moon':'fa-solid fa-moon',
         'paper-plane':'fa-solid fa-paper-plane',
+        'pencil':'fa-solid fa-pencil',
         'plus':'fa-solid fa-plus',
         'poo':'fa-solid fa-poo',
         'power-off':'fa-solid fa-power-off',

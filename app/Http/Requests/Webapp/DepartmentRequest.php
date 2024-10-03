@@ -11,7 +11,7 @@ class DepartmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,19 @@ class DepartmentRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $rules = [];
+        if ($this->isMethod('post')) {
+            $rules += [
+                'name' => ['required', 'min:3', 'max:64', 'unique:departments'],
+                'cost_center' => ['required','numeric',  'min:1000', 'max:99999999', 'unique:departments,cost_center'],
+            ];
+        } else {
+            $rules += [
+                'name' => ['required', 'min:3', 'max:64', 'unique:departments,id,' . $this->id],
+                'cost_center' => ['required','numeric',  'min:1000', 'max:999999999', 'unique:departments,cost_center,' . $this->id],
+            ];
+        }
+
+        return $rules;
     }
 }
