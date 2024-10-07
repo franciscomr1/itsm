@@ -39,11 +39,9 @@ const close = () => {
 }
 
 
-
-const form = useForm(
-   props.fieldValues
+const form = useForm({}
+   //props.fieldValues
 );
-
 
 const submit = () => {
     if (props.isNewRecord) {
@@ -69,46 +67,44 @@ const submit = () => {
         <template #header>
         </template>
         <template #content>
-  
+            {{ fields }}
 
-
-
-                <form @submit.prevent="submit">
-    
-                    <div class="inline-flex justify-center items-center w-full">
+            <!--- 
+            
+            
+            <form @submit.prevent="submit">
+                <div class="inline-flex justify-center items-center w-full">
                    <ActionButton label="Cancelar" :style="'secondary'" @click="close()" />
                    <h2 class="w-full text-center font-semibold text-light-primary dark:text-dark-primary">{{title}}</h2>
                    <ActionButton type="submit" :label="isNewRecord ? 'Guardar' : 'Actualizar'" :style="'primary'" 
                         :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
                    />
                 </div>
-    
-    
-                    <div v-for="field in fields">
-                        <div v-if="field.type === 'select'">
-                            <InputLabel :for="field.id" :value="field.label" />
-                            <SelectInput :id="field.id"
-                            v-model="form[field.id]"
-                            :data="field.propierties.data"
-                            />
-                        </div>
-                        
-                        <div v-if="field.type === 'input'">
-                            <InputLabel :for="field.id" :value="field.label" />
-                            <TextInput
-                                :id="field.id"
-                                v-model="form[field.id]"
-                                :type="field.propierties.type"
-                                required
-                            />
-                            <InputError  :message="form.errors[field.id]" />
-                        </div>
-    
+
+
+
+                <div v-for="field in fields">
+                    <div v-if="field.type === 'select'">
+                        <InputLabel :for="field.id" :value="field.label" />
+                        <SelectInput :id="field.id"
+                        v-model="form[field.id]"
+                        :data="field.propierties.data"
+                        />
                     </div>
-                </form>
-            <!--- 
-            
-            
+                    
+                    <div v-if="field.type === 'input'">
+                        <InputLabel :for="field.id" :value="field.label" />
+                        <TextInput
+                            :id="field.id"
+                            v-model="form[field.id]"
+                            type="text"
+                            required
+                        />
+                        <InputError  :message="form.errors[field.id]" />
+                    </div>
+
+                </div>
+            </form>
             -->
            <!--   
             

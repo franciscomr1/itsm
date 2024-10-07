@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Webapp;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\Http\Resources\Webapp\CompanyResource;
 use App\Classes\DataTableResourceFormat;
 use App\Http\Requests\Webapp\CompanyRequest;
@@ -14,12 +15,8 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $resource = new DataTableResourceFormat('companies');
-        return Inertia::render('Custom/Views/Resource', [
-            'title' => $resource->getResourceAlias(),
-            'resource' => $resource->getResourceName(),
-            'columns' => $resource->getAttributes()
-        ]);
+        $resource = Company::GetResourceObject();
+        return Inertia::render('Custom/Views/Resource', $resource);
     }
 
     public function search(Request $request)
@@ -31,27 +28,25 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         try {
-            $resource = new Company();
-            $resource->fill($request->validated());
-            $resource->save();
+            $resource = Company::create($request->validated());
         } catch (Exception $e) {
             $e->getMessage();
         }
 
-        return back()->with('message',['type'=>'success', 'title'=> 'Alta Exitosa','description'=>'Se creó un nuevo recurso con ID: '. $resource->id]);
+        return back()->with('message',['type'=>'success', 'title'=> 'Alta Exitosa','description'=>'Se creó una nueva Empresa con ID: '. $resource->id]);
     }
 
     public function update(CompanyRequest $request, $id)
     {
+        $resource = Company::findOrFail($id);
         try {
-            $resource = Company::findOrFail($id);
             $resource->fill($request->validated());
             $resource->save();
         } catch (Exception $e) {
             $e->getMessage();
         }
 
-        return back()->with('message',['type'=>'info', 'title'=> 'Actualización Exitosa','description'=>'Se actualizó el recurso con ID: '. $resource->id]);
+        return back()->with('message',['type'=>'info', 'title'=> 'Actualización Exitosa','description'=>'Se actualizó la Empresa con ID: '. $resource->id]);
     }
 
     public function show($id){

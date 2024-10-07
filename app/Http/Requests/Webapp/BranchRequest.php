@@ -11,7 +11,7 @@ class BranchRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,24 @@ class BranchRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'company_id' => 'required | exists:companies,id',
+            'address' => ['required', 'min:3', 'max:96'],
+            'city' => ['required', 'min:3', 'max:32'],
+            'state' => ['required', 'min:3', 'max:32'],
+            'city' => ['required', 'min:3', 'max:32'],
+            'postal_code' => ['required', 'digits:5']
         ];
+        if ($this->isMethod('post')) {
+            $rules += [
+                'name' => ['required', 'min:3', 'max:32', 'unique:branches'],
+            ];
+        } else if ($this->isMethod('patch')) {
+            $rules += [
+                'name' => ['required', 'min:3', 'max:32', 'unique:branches,name,' . $this->id],
+            ];
+        }
+
+        return $rules;
     }
 }

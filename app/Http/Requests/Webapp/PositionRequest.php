@@ -11,7 +11,7 @@ class PositionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,19 @@ class PositionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'department_id' => ['required', 'exists:departments,id'],
         ];
+        if ($this->isMethod('post')) {
+            $rules += [
+                'name' => ['required', 'min:3', 'max:64', 'unique:positions'],
+            ];
+        } else {
+            $rules += [
+                'name' => ['required', 'min:3', 'max:64', 'unique:positions,id,' . $this->id],
+            ];
+        }
+
+        return $rules;
     }
 }

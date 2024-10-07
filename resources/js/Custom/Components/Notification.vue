@@ -43,39 +43,29 @@
     const style = computed(() => styleList[props.type] || '' );
     const icon = computed(()=>iconList[props.type] ?  iconList[props.type] : props.iconName);
 
+    const emit =  defineEmits(['closeNotification'])
 
-   const emit =  defineEmits(['hideNotification'])
-
-
-const clearNotification = () => {
-    emit('hideNotification')
-}
-
-
+    const dismissNotification = () => {
+        emit('closeNotification')
+    }
 
     const fade = (timevar, ) => {
         setTimeout(function () {
-        clearNotification()
+        dismissNotification()
       }, timevar);
     }
 
-    
     onMounted(() => {
       fade(props.fadeTime)
     });
 
-
-
-
 </script>
 <template>
-    <div class="absolute z-10 w-full p-4">
-
+    <div class="absolute z-10 w-full p-4 flex justify-center">
         <div class=" w-full md:max-w-md  bg-dark-container dark:bg-dark-container rounded-lg">
              <div class="bg-white/[0.96] dark:bg-white/[0.04] flex p-2 rounded-md w-full">
                  <div class="flex flex-col items-center justify-center w-1/12">
                      <div class="w-8 h-8 rounded-full flex items-center justify-center" :class="style">
-     
                          <Icon :name="icon" size="lg" />
                      </div>
                  </div>
@@ -84,11 +74,9 @@ const clearNotification = () => {
                      <h3 class="text-sm text-light-secondary dark:text-dark-secondary">{{ description }}</h3>
                  </div>
                  <div class="flex flex-col items-center justify-center w-1/12">
-                     <button @click="clearNotification()"  class="h-7 w-7 rounded-full text-light-primary dark:text-dark-primary hover:bg-black/[8%] dark:hover:bg-white/[8%] active:bg-black/[12%] dark:active:bg-white/[12%] focus:bg-black/[12%] dark:focus:bg-white/[12%] transition ease-in-out duration-150"><Icon :name="'xmark'" size="'sm'" /></button>
+                     <button @click="dismissNotification()"  class="h-7 w-7 rounded-full text-light-primary dark:text-dark-primary hover:bg-black/[8%] dark:hover:bg-white/[8%] active:bg-black/[12%] dark:active:bg-white/[12%] focus:bg-black/[12%] dark:focus:bg-white/[12%] transition ease-in-out duration-150"><Icon :name="'xmark'" size="'sm'" /></button>
                  </div>
-     
              </div>
-     
         </div>
     </div>
 </template>

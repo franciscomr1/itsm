@@ -1,141 +1,213 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
-import jszip from 'jszip';
-import 'datatables.net-buttons-dt';
-import 'datatables.net-buttons/js/buttons.html5.mjs';   
-import 'datatables.net-buttons/js/buttons.print.mjs';
-import ResourceForm from '@/Pages/Custom/Templates/ResourceForm.vue';
+import { router } from '@inertiajs/vue3'
+    import { ref, onMounted, computed } from 'vue';
+    import DataTable from 'datatables.net-vue3';
+    import DataTablesCore from 'datatables.net';
+    import jszip from 'jszip';
+    import 'datatables.net-buttons-dt';
+    import 'datatables.net-buttons/js/buttons.html5.mjs';   
+    import 'datatables.net-buttons/js/buttons.print.mjs';
+    import ResourceForm from '@/Pages/Custom/Templates/ResourceForm.vue';
+    import Notification from '@/Custom/Components/Notification.vue';
+    import ActionButton from '@/Custom/Components/ActionButton.vue';
 
- 
-window.JSZip = jszip;
-DataTable.use(DataTablesCore);
+    window.JSZip = jszip;
+    DataTable.use(DataTablesCore);
 
-const props = defineProps({
-    title: {
-        type: String,
-        required:true
-    },
-    route: {
-        type: String,
-        required:true
-    },
-    columns: {
-        type: Array,
-        required:true
-    },
-    options: {
-        type: Object,
-        default: (props) => ({
-            responsive: true,
-            order: [0, 'desc'],
-            layout: {  
-                topStart: null,
-                topEnd: null,
-                top2: {
-                    className: 'dt-top',
-                    features: {
-                        pageLength: {
-                            menu: [5, 10, 25, 50]
-                        },
-                        div: {
-                            className: 'dt-title',
-                            text:props.title,
-                        },
-                        buttons: {
-                            buttons: [ 
-                            {
-                                text: '<i class="fa-solid fa-plus"></i>',
-                                className:'dt-btn-create',
-                                action: function (e, dt, node, config) {
-                                   // modalIsVisible.value = true;
-                                }   
+    const props = defineProps({
+        title: {
+            type: String,
+            required:true
+        },
+        resource: {
+            type: String,
+            required:true
+        },
+        columns: {
+            type: Array,
+            required:true
+        },
+    });
+
+    const options = {
+                responsive: true,
+                order: [0, 'desc'],
+                layout: {  
+                    topStart: null,
+                    topEnd: null,
+                    top2: {
+                        className: 'dt-top',
+                        features: {
+                            pageLength: {
+                                menu: [5, 10, 25, 50]
                             },
-                            { 
-                                extend: 'excel',
-                                text: '<i class="fa-solid fa-download"></i>',
-                                className:'dt-btn-export' 
+                            div: {
+                                className: 'dt-title',
+                                text:props.title,
+                            },
+                            buttons: {
+                                buttons: [ 
+                                {
+                                    text: '<i class="fa-solid fa-plus"></i>',
+                                    className:'dt-btn-create',
+                                    action: function (e, dt, node, config) {
+                                        openCreateFormModal(null)
+                                    }   
+                                },
+                                { 
+                                    extend: 'excel',
+                                    text: '<i class="fa-solid fa-download"></i>',
+                                    className:'dt-btn-export' 
+                                }
+                                ]
                             }
-                            ]
                         }
-                    }
-                },
-                top:{
-                    className: 'dt-top-search',
-                    features: {
-                        search: {
-                            //placeholder: 'Search here...',
-                            text: 'Buscar _INPUT_'
+                    },
+                    top:{
+                        className: 'dt-top-search',
+                        features: {
+                            search: {
+                                //placeholder: 'Search here...',
+                                text: 'Buscar _INPUT_'
+                            }
                         }
-                    }
-                },
-                bottomStart:null,
-                bottomEnd:null,
-                bottom: {
-                    className: 'dt-bottom',
-                    features: {
-                        info: {
-                            text: 'Mostrando: _START_ a _END_ de _TOTAL_ registros'
-                        },
-                        paging: {
-                            numbers: true
+                    },
+                    bottomStart:null,
+                    bottomEnd:null,
+                    bottom: {
+                        className: 'dt-bottom',
+                        features: {
+                            info: {
+                                text: 'Mostrando: _START_ a _END_ de _TOTAL_ registros'
+                            },
+                            paging: {
+                                numbers: true
+                            }
                         }
                     }
                 }
             }
-        })
+       
+            
+    router.on('success', (event) => {
+        notificationIsVisible.value = true
+    })
+
+
+    const formData = ref(null);
+    const formFieldValues=ref({});
+
+    const modalIsVisible = ref(false);
+    const notificationIsVisible = ref(true);
+
+    const isNewRecord = ref(true);
+
+    const getFormData = async(data = null) => {
+        if (formData.value === null) {
+            formData.value = await getResourceFormData();
+            formFieldValues.value = formData.value['fieldValues']
+        }
     }
-});
 
+    const getResourceFormData = async () => {
+        try {
+            const response = await axios.get(route('create.resource'),
+            {
+                params:
+                {
+                    'resource': props.resource,
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching resource data:', error);
+            return null;
+        }
+    }
 
+    const openUpdateFormModal = async(rowData) => {
+        isNewRecord.value = false
+        await getFormData()
+        formData.value['fieldValues'] = rowData
+        modalIsVisible.value = true;
+    }
 
-const modalIsVisible = ref(false);
-const hideModal = () => {
-    modalIsVisible.value = false;
-}
-const showModal = () => {
-    modalIsVisible.value = true;
-}
-const toggleModal = () => {
-    modalIsVisible.value = !modalIsVisible.value;
-}
-const ajax = route(props.route);
+    const openCreateFormModal =  async() => {
+        isNewRecord.value = true
+        await getFormData()
+        formData.value['fieldValues'] = formFieldValues.value
+        modalIsVisible.value = true;
+    }
+
+    const closeModal = () => {
+        modalIsVisible.value = false;
+    }
+
+    const hideNotification = () => {
+        notificationIsVisible.value = false;
+        reloadTable();
+        //location.reload();
+    }
+
+    const ajax = route(props.resource+'.search');
+
+    let dt;
+    const table = ref();
+ 
+    onMounted(function () {
+    dt = table.value.dt;
+    });
+    
+    function reloadTable() {
+        dt.ajax.url(route(props.resource+'.search')).load();
+    }
+
 </script>
 
 <template>
+    <div v-if="modalIsVisible" class="relative z-10">
 
-
-
-<div v-if="modalIsVisible" class="relative z-10">
-
-  <div class="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity"></div>
-
-  <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-
-      <div class="relative transform overflow-hidden transition-all w-full md:max-w-md px-6 md:px-0">
-        <ResourceForm />
-      </div>
+        <div class="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden transition-all w-full md:max-w-md px-6 md:px-0">
+                    <ResourceForm @close-modal="closeModal"  :title="title" :resource="resource" :fields="formData['fields']" :field-values="formData['fieldValues']" :isNewRecord="isNewRecord" />
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-
-
+    <div class="relative">
+        <div class="w-full">
+            <Notification v-if="$page.props.flash.message && notificationIsVisible" 
+             @hide-notification="hideNotification" 
+             :type="$page.props.flash.message.type"
+             :title="$page.props.flash.message.title"
+             :description="$page.props.flash.message.description" />
+        </div>
+    </div>
 
 
     <div class="p-4">
         <div class="">
             <DataTable
+                ref="table"
                 id="table-resource"
                 :ajax="ajax"
                 :columns="columns"
                 :options="options"
-                class="display "
-            />
+                class="display " 
+            >
+            <template #column-update="props">
+                <ActionButton icon-name="pencil" @click="openUpdateFormModal(props.rowData)" />
+
+        </template>
+
+        </DataTable>
         </div>
     </div>
+
+    
 </template>
 
 <style>
@@ -180,6 +252,12 @@ const ajax = route(props.route);
 
     .dt-length{
         width: 33.333333%; 
+    }
+
+    .dt-search label {
+        font-size: 0.875rem; 
+        line-height: 1.25rem; 
+        color: var(--secondary);
     }
 
     .dt-search input{

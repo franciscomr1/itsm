@@ -1,11 +1,13 @@
 <script setup>
-    import { ref, onMounted, computed } from 'vue';
+    import { ref, onMounted } from 'vue';
+    import { router } from '@inertiajs/vue3'
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net';
     import jszip from 'jszip';
     import 'datatables.net-buttons-dt';
     import 'datatables.net-buttons/js/buttons.html5.mjs';   
     import 'datatables.net-buttons/js/buttons.print.mjs';
+
     import ResourceForm from '@/Pages/Custom/Templates/ResourceForm.vue';
     import Notification from '@/Custom/Components/Notification.vue';
     import ActionButton from '@/Custom/Components/ActionButton.vue';
@@ -14,20 +16,21 @@
     DataTable.use(DataTablesCore);
 
     const props = defineProps({
-        title: {
-            type: String,
-            required:true
-        },
-        resource: {
-            type: String,
-            required:true
-        },
-        columns: {
-            type: Array,
-            required:true
-        },
-    });
+            resource: {
+                type: String,
+                required:true
+            },
+            title: {
+                type: String,
+                required:true
+            },
+            columns: {
+                type: Array,
+                required:true
+            },
+        });
 
+    const ajax = route(props.resource+'.search');
     const options = {
                 responsive: true,
                 order: [0, 'desc'],
@@ -50,7 +53,7 @@
                                     text: '<i class="fa-solid fa-plus"></i>',
                                     className:'dt-btn-create',
                                     action: function (e, dt, node, config) {
-                                        openCreateFormModal(null)
+                                        openFormModal(true, null)
                                     }   
                                 },
                                 { 
@@ -85,63 +88,80 @@
                         }
                     }
                 }
-            }
-        
-    const formData = ref(null);
-    const formFieldValues=ref({});
-
-    const modalIsVisible = ref(false);
-    const notificationIsVisible = ref(true);
-
-    const isNewRecord = ref(true);
-
-    const getFormData = async(data = null) => {
-        if (formData.value === null) {
-            formData.value = await getResourceFormData();
-            formFieldValues.value = formData.value['fieldValues']
-        }
     }
 
-    const getResourceFormData = async () => {
-        try {
-            const response = await axios.get(route('create.resource'),
+    const formData = ref(null);
+    const isNewRecord = ref(true);
+    const formFields = ref(null);
+    const formFieldValues = ref(null);
+    const formFieldNullValues = ref(null);
+    const errors = ref();
+
+    const formModalIsVisible = ref(false);
+    const notificationIsVisible = ref(true)
+
+   const openFormModal = async(createRecord, data = null) => {
+    formData.value = await getFormFields();
+
+        if(!!createRecord){
+            formData.value['values'] = formFieldNullValues.value
+        }
+        else {
+            formData.value['values'] = data;
+        }
+       isNewRecord.value = !!createRecord
+       formModalIsVisible.value = true
+
+   }
+
+   const getFormFields = async() => {
+        if(formFields.value === null) {
+            try {
+            const response = await axios.get(route('form.resource'),
             {
                 params:
                 {
                     'resource': props.resource,
                 }
             });
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching resource data:', error);
-            return null;
+            formFieldNullValues.value = response.data['values']
+
+            return response.data
+
+            } catch (error) {
+                console.error('Error fetching resource data:', error);
+            return error
+            }
         }
+   }
+
+   const deactivateItem = async(id) => {
+        if (confirm("¿Estas seguro que deseas INACTIVAR este Registro?") == false) {
+                    return false;
+        } else {
+            try {
+                router.patch(route(props.resource + '.deactivate', { id: id }));
+
+            } catch (error) {
+                console.error('Error fetching resource data:', error);
+                return error
+            }
+        }
+   }
+
+   const closeModal = () => {
+        formModalIsVisible.value = false;
     }
 
-    const openUpdateFormModal = async(rowData) => {
-        isNewRecord.value = false
-        await getFormData()
-        formData.value['fieldValues'] = rowData
-        modalIsVisible.value = true;
-    }
+    router.on('success', (event) => {
+        notificationIsVisible.value = true
+    })
 
-    const openCreateFormModal =  async() => {
-        isNewRecord.value = true
-        await getFormData()
-        formData.value['fieldValues'] = formFieldValues.value
-        modalIsVisible.value = true;
-    }
 
-    const closeModal = () => {
-        modalIsVisible.value = false;
+    const closeNotification = () => {
+        reloadTable();
+        notificationIsVisible.value = false
     }
-
-    const hideNotification = () => {
-        notificationIsVisible.value = false;
-        location.reload();
-    }
-
-    const ajax = route(props.resource+'.search');
 
     let dt;
     const table = ref();
@@ -149,58 +169,49 @@
     onMounted(function () {
     dt = table.value.dt;
     });
-    
+
     function reloadTable() {
         dt.ajax.url(route(props.resource+'.search')).load();
     }
 
 </script>
-
+ 
 <template>
-    <div v-if="modalIsVisible" class="relative z-10">
-
-        <div class="fixed inset-0 bg-neutral-500 bg-opacity-50 transition-opacity"></div>
+    <div v-if="formModalIsVisible && formData" class="relative z-10">
+        <div class="fixed inset-0 bg-neutral-400 dark:bg-neutral-600 dark:bg-opacity-50 bg-opacity-50 transition-opacity"></div>
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div class="relative transform overflow-hidden transition-all w-full md:max-w-md px-6 md:px-0">
-                    <ResourceForm @close-modal="closeModal"  :title="title" :resource="resource" :fields="formData['fields']" :field-values="formData['fieldValues']" :isNewRecord="isNewRecord" />
+                    <ResourceForm @close-modal="closeModal"  :title="title" :resource="resource" :fields="formData['fields']" :field-values="formData['values']" :isNewRecord="isNewRecord" />
                 </div>
             </div>
         </div>
     </div>
 
-    {{ $page.props.flash.message }}
     <div class="relative">
         <div class="w-full">
             <Notification v-if="$page.props.flash.message && notificationIsVisible" 
-             @hide-notification="hideNotification" 
+             @close-notification="closeNotification" 
              :type="$page.props.flash.message.type"
              :title="$page.props.flash.message.title"
-             :description="$page.props.flash.message.description" />
+             :description="$page.props.flash.message.description"
+             :fade-time=3000 />
         </div>
     </div>
-
 
     <div class="p-4">
-        <div class="">
-            <DataTable
-                ref="table"
-                id="table-resource"
-                :ajax="ajax"
-                :columns="columns"
-                :options="options"
-                class="display " 
-            >
+        <DataTable  ref="table" id="table-resource" :ajax="ajax" :columns="columns" :options="options" class="display">
             <template #column-update="props">
-                <ActionButton icon-name="pencil" @click="openUpdateFormModal(props.rowData)" />
+                <ActionButton icon-name="pen" @click="openFormModal(false,props.rowData)" />
+            </template>
 
-        </template>
-
+            <template #column-deactivate="props">
+                <ActionButton v-if="props.rowData.is_active" icon-name="circle-minus" @click="deactivateItem(props.rowData.id)" />
+            </template>
+            
         </DataTable>
-        </div>
     </div>
 
-    
 </template>
 
 <style>
@@ -534,22 +545,8 @@
         padding-left: 4px;
     }
 
-    
-
-    /* Table 
-    
-    table.dataTable thead th, 
-table.dataTable tbody td{
-    color: var(--secondary);
-    border-bottom-width: 1px;
-    border-color: var(--tertiary);
-    font-size: 0.875rem; 
-    line-height: 1.25rem; 
-    height: 3.5rem; 
-    text-align: left;
-}
-    */
-
-
+    #table-resource tbody > tr  .dt-type-boolean {
+        color:red
+    }
 
 </style>

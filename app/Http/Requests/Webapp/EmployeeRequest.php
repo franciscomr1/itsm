@@ -4,6 +4,8 @@ namespace App\Http\Requests\Webapp;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use Illuminate\Validation\Rule;
+
 class EmployeeRequest extends FormRequest
 {
     /**
@@ -11,7 +13,7 @@ class EmployeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +23,35 @@ class EmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'branch_id' => ['required', 'exists:branches,id'],
+            'position_id' => ['required', 'exists:positions,id'],
+            'last_name' => ['required', 'min:3', 'max:64'],
+            'hire_date' => ['required', 'date'],
         ];
+        if ($this->isMethod('post')) {
+            $rules += [
+                'first_name' => [
+                    'required', 'min:3', 'max:32',
+                    Rule::unique('employees')
+                        ->where('first_name', $this->first_name)
+                        ->where('last_name', $this->last_name)
+                ],
+                'employee_id_number' => ['unique:employees,employee_id_number', ' nullable'],
+            ];
+        } else {
+            $rules += [
+                'first_name' => [
+                    'required', 'min:3', 'max:32',
+                    Rule::unique('employees')
+                        ->ignore($this->id)
+                        ->where('first_name', $this->first_name)
+                        ->where('last_name', $this->last_name)
+                ],
+                'employee_id_number' => 'nullable| unique:employees,employee_id_number,' . $this->id,
+            ];
+        }
+
+        return $rules;
     }
 }

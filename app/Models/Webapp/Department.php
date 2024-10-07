@@ -4,14 +4,16 @@ namespace App\Models\Webapp;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\Webapp\GetFormParameters;
+
+use App\Traits\Webapp\GetResourceObject;
+use App\Traits\Webapp\GetResourceFormFields;
 use App\Traits\Database\AddFieldsCreatedByAndUpdatedBy;
 
 use DateTimeInterface;
 
 class Department extends Model
 {
-    use HasFactory, GetFormParameters, AddFieldsCreatedByAndUpdatedBy;
+    use HasFactory, GetResourceObject, GetResourceFormFields ,  AddFieldsCreatedByAndUpdatedBy;
 
     protected $fillable = [
         'name',
