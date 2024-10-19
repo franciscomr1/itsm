@@ -20,6 +20,10 @@ const form = useForm({
     <AppLayout title="Dashboard">
 
             <template #content>
+
+                <!--
+                
+                
                 <div class=" h-full w-full flex flex-col justify-center items-center">
                     <div class="w-full md:max-w-md px-6 md:px-0">
                         <FormCard>
@@ -55,6 +59,7 @@ const form = useForm({
                         </FormCard>
                     </div>
                 </div>
+                -->
             </template>
     </AppLayout>
 </template>

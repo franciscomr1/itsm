@@ -5,7 +5,6 @@ namespace App\Models\Webapp;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Traits\Webapp\GetFormParameters;
 use App\Traits\Webapp\GetResourceObject;
 use App\Traits\Webapp\GetResourceFormFields;
 use App\Traits\Database\AddFieldsCreatedByAndUpdatedBy;
@@ -15,7 +14,7 @@ use DateTimeInterface;
 
 class Position extends Model
 {
-    use HasFactory, GetFormParameters,GetResourceObject, GetResourceFormFields ,  AddFieldsCreatedByAndUpdatedBy;
+    use HasFactory, GetResourceObject, GetResourceFormFields ,  AddFieldsCreatedByAndUpdatedBy;
 
     protected $fillable = [
         'department_id',

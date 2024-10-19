@@ -33,7 +33,7 @@ class PositionController extends Controller
             $e->getMessage();
         }
 
-        return back()->with('message',['type'=>'success', 'title'=> 'Alta Exitosa','description'=>'Se creó un nuevo Empleado con ID: '. $resource->id]);
+        return back()->with('message',['type'=>'success', 'title'=> 'Alta Exitosa','description'=>'Se creó un nuevo Puesto con ID: '. $resource->id]);
     }
 
     public function update(PositionRequest $request, $id)
@@ -46,6 +46,6 @@ class PositionController extends Controller
             $e->getMessage();
         }
 
-        return back()->with('message',['type'=>'info', 'title'=> 'Actualización Exitosa','description'=>'Se actualizó el Empleado con ID: '. $resource->id]);
+        return back()->with('message',['type'=>'info', 'title'=> 'Actualización Exitosa','description'=>'Se actualizó el Puesto con ID: '. $resource->id]);
     }
 }

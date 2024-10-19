@@ -44,7 +44,7 @@
                     <form @submit.prevent="submit">
                         <div class="space-y-2 mb-2">
                             <div v-if="fortifyUsername === 'email'">
-                                <InputLabel label="Email" for="email"  />
+                                <InputLabel value="Email" for="email"  />
                                 <TextInput
                                     id="email"
                                     v-model="form.email"
@@ -58,7 +58,7 @@
                             </div>
     
                             <div v-else>
-                                <InputLabel label="Username" for="username"  />
+                                <InputLabel value="Username" for="username"  />
                                 <TextInput
                                     id="username"
                                     v-model="form.username"
@@ -72,7 +72,7 @@
                             </div>
     
                             <div>
-                                <InputLabel for="password" label="Password" />
+                                <InputLabel for="password" value="Password" />
                                 <TextInput
                                     id="password"
                                     v-model="form.password"

@@ -17,8 +17,8 @@ class BranchResource extends JsonResource
         return [
             'id' => (string) $this->resource->id,
             'company' => $this->when(!is_null($this->resource->company->name), $this->resource->company->name),
-            'name' => $this->when(!is_null($this->resource->name), $this->resource->name),
             'company_id' => $this->when(!is_null($this->resource->company_id), $this->resource->company_id),
+            'name' => $this->when(!is_null($this->resource->name), $this->resource->name),
             'address' => $this->when(!is_null($this->resource->address), $this->resource->address),
             'city' => $this->when(!is_null($this->resource->city), $this->resource->city),
             'state' => $this->when(!is_null($this->resource->state), $this->resource->state),

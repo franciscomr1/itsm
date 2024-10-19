@@ -10,7 +10,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/form/resource', function (Request $request) {
-    $resourceName = "App\\Models\\Webapp\\" . ucfirst(Str::singular($request->resource));
+    $resourceName = "App\\Models\\Webapp\\" . Str::studly(ucfirst(Str::singular($request->resource)));
     $resource = new $resourceName();
     return response()->json($resource::GetResourceFormFields());
 })->name('form.resource');

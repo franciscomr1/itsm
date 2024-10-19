@@ -33,7 +33,7 @@ const logout = () => {
         <div class="flex h-screen">
 
             <div :class="sidebarIsVisible ? 'translate-x-0' : '-translate-x-full md:translate-x-0'" 
-                class="fixed md:static transition-all duration-300 ease-in-out md:block flex-shrink-0 h-full w-72">
+                class="fixed md:static z-50 transition-all duration-300 ease-in-out md:block flex-shrink-0 h-full w-72">
 
                 <Sidebar>
                     <template #header>
@@ -60,30 +60,69 @@ const logout = () => {
                                         <SidebarMenuLink label="Personal" route-name="employees.index" />
                                     </template>
                                 </SideBarMenu>
-                                <SideBarMenu label="Activos" iconName="desktop">
+                                <SideBarMenu label="Activos" iconName="computer">
                                     <template #dropdown-menu>
-                                        <SidebarMenuLink label="Empresas"  :href="route('companies.index')" />
+                                        <SidebarMenuLink label="Proveedores" route-name="providers.index" />
+                                        <SidebarMenuLink label="Contratos" route-name="contracts.index" />
+                                        <SidebarMenuLink label="Fabricantes" route-name="manufacturers.index" />
+                                        <SidebarMenuLink label="Condición de Activo" route-name="asset_conditions.index" />
+                                        <SidebarMenuLink label="Status de Activo" route-name="asset_statuses.index" />
+                                        <SidebarMenuLink label="Categorias de Activo" route-name="asset_categories.index" />
+                                        <SidebarMenuLink label="Tipos de Activo" route-name="asset_types.index" />
+                                        <SidebarMenuLink label="Modelos de Activo" route-name="asset_models.index" />
                                     </template>
                                 </SideBarMenu>
-                                <SidebarLink label="Perfil" iconName="user" :href="route('dashboard')" />
+                                <SideBarMenu label="Service desk" iconName="handshake-angle">
+                                    <template #dropdown-menu>
+                                        <SidebarMenuLink label="Issues" route-name="issue_types.index" />
+                                        <SidebarMenuLink label="Tipos de Issues" route-name="request_categories.index" />
+                                        <SidebarMenuLink label="Solictudes de Servicio" route-name="request_types.index" />
+                                        <SidebarMenuLink label="Status" route-name="request_statuses.index" />
+                                        <SidebarMenuLink label="Personal" route-name="employees.index" />
+                                    </template>
+                                </SideBarMenu>
                             </template>
                         </SidebarSection>
+                        <div id="divider">
+                            <div class="mx-4 py-1 border-b border-neutral-300 dark:border-neutral-700"></div>
+                        </div>
+
+                        <SidebarSection title="Service Desk">
+                            <template #content>
+                                <SideBarMenu label="Service Desk" iconName="handshake-angle">
+                                    <template #dropdown-menu>
+                                        <SidebarMenuLink label="Crear Ticket (Usuario)" route-name="tickets.create" />
+                                        <SidebarMenuLink label="Mis Tickets (Usuario)" route-name="tickets.index" />
+                                        <SidebarMenuLink label="Gráficas" route-name="tickets.chart" />
+                                        <SidebarMenuLink label="Departamentos" route-name="departments.index" />
+                                        <SidebarMenuLink label="Puestos" route-name="positions.index" />
+                                        <SidebarMenuLink label="Personal" route-name="employees.index" />
+                                    </template>
+                                </SideBarMenu>
+
+                            </template>
+                        </SidebarSection>
+    
                     </template>
+                    <template #footer>
+                        <ActionButton @click="logout()" label="Cerrar Sesión" :style="'secondary'" class="w-full"/>
+                    </template>
+
                 </Sidebar>
 
             </div>
 
             <!-- Main Content -->
             <div class="flex-1 flex flex-col bg-light-background dark:bg-dark-background overflow-hidden">
-                <Topbar>
+                <Topbar class="block md:hidden">
                     <template #left>
-                        <ActionButton iconName="bars"  :style="'secondary'" class="block md:hidden" @click="toggleSidebar()" />
+                        <ActionButton iconName="bars"   class="block md:hidden" @click="toggleSidebar()" />
                     </template>
                     <template #center>
                         <Logo size="lg" class="mx-auto"/>
                     </template>
                     <template #right>
-                        <ActionButton @click="logout()" iconName="power-off" :style="'secondary'" />
+                        <ActionButton @click="logout()" iconName="power-off"  />
                     </template>
                 </Topbar>
 

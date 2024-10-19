@@ -149,6 +149,20 @@
         }
    }
 
+   const assignItem = async(id) => {
+        if (confirm("¿Estas seguro que deseas ASIGNARTE este Ticket?") == false) {
+                    return false;
+        } else {
+            try {
+                router.patch(route(props.resource + '.assign', { id: id }));
+
+            } catch (error) {
+                console.error('Error fetching resource data:', error);
+                return error
+            }
+        }
+   }
+
    const closeModal = () => {
         formModalIsVisible.value = false;
     }
@@ -195,18 +209,44 @@
              :type="$page.props.flash.message.type"
              :title="$page.props.flash.message.title"
              :description="$page.props.flash.message.description"
-             :fade-time=3000 />
+             :fade-time=2000 />
         </div>
     </div>
 
     <div class="p-4">
-        <DataTable  ref="table" id="table-resource" :ajax="ajax" :columns="columns" :options="options" class="display">
+        <DataTable  ref="table" id="table-resource" :ajax="ajax" :columns="columns" :options="options" class="display"
+
+        
+        >
+
+        <template #column-active="props">
+            <div class=" text-center" :class="props.rowData.is_active? 'text-green-500': 'text-red-500'">
+                    <span v-if="props.rowData.is_active"><i class="fa-solid fa-check"></i></span>
+                    <span v-else><i class="fa-solid fa-xmark"></i></span>
+            </div>
+            </template>
+
+            <template #column-priority="props">
+            <div class=" text-center" >
+                <span class="p-0.5 rounded-md text-white" 
+                :class="props.rowData.priority_level_id === 1?
+                 'bg-blue-400':props.rowData.priority_level_id === 2?
+                  ' bg-green-400':props.rowData.priority_level_id === 3 ?
+                  'bg-yellow-400':props.rowData.priority_level_id === 4 ? 
+                  'bg-orange-400':'bg-red-400'">{{props.rowData.priority_level}}</span>
+            </div>
+            </template>
+
             <template #column-update="props">
                 <ActionButton icon-name="pen" @click="openFormModal(false,props.rowData)" />
             </template>
 
             <template #column-deactivate="props">
                 <ActionButton v-if="props.rowData.is_active" icon-name="circle-minus" @click="deactivateItem(props.rowData.id)" />
+            </template>
+
+            <template #column-assign="props">
+                <ActionButton v-if="props.rowData.assigned_to === null" icon-name="fa-user-check" @click="assignItem(props.rowData.id)" />
             </template>
             
         </DataTable>
@@ -545,8 +585,15 @@
         padding-left: 4px;
     }
 
-    #table-resource tbody > tr  .dt-type-boolean {
-        color:red
+    #table-resource tbody > tr  .dt-type-active {
+        color:green;
+        text-align: center; 
+    }
+
+    #table-resource tbody > tr  .dt-type-inactive {
+        color:red;
+        margin-left: auto;
+        margin-right: auto;
     }
 
 </style>

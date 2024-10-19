@@ -29,6 +29,7 @@
         'circle-exclamation':'fa-solid fa-circle-exclamation',
         'circle-minus':'fa-solid fa-circle-minus',
         'circle-user':'fa-solid fa-circle-user',
+        'computer':'fa-solid fa-computer',
         'database':'fa-solid fa-database',
         'desktop': 'fa-solid fa-desktop',
         'download':'fa-solid fa-download',
@@ -55,6 +56,7 @@
         'trash':'fa-solid fa-trash',
         'triangle-exclamation':'fa-solid fa-triangle-exclamation',
         'user':'fa-solid fa-user',
+        'fa-user-check':'fa-solid fa-user-check',
         'xmark':'fa-solid fa-xmark',
         }
 
